@@ -10,6 +10,20 @@ class ApiPage extends StatefulWidget {
 class _ApiPageState extends State<ApiPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("HomePage")
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

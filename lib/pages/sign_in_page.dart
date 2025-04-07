@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_udea/pages/recovey_password.dart';
+import 'package:movies_udea/pages/sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -79,7 +80,14 @@ class _SignInPageState extends State<SignInPage> {
                           fontWeight: FontWeight.bold
                       ),
                     ),
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()
+                        ),
+                      );
+                    },
                     child:const Text("Registrarse"),
                   ),
                   const SizedBox(
