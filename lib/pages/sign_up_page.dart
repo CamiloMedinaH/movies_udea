@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../repository/firebase_api.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -25,6 +27,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _repPassword = TextEditingController();
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +184,40 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _onRegisterButtonClicked() {
+    if (_email.text.isEmpty || _password.text.isEmpty || _repPassword.text.isEmpty) {
+      showMsg("Debe digitar todos los campos");
+    } else if (_password.text != _repPassword.text) {
+      showMsg("las contraseñas deben de ser iguales");
+    } else if (_password.text.length < 6) {
+      showMsg("La contraseña debe tener minimo 6 caracteres");
+    } else {
+      createUser(_email.text, _password.text);
+    }
+  }
 
+  void createUser(String email, String password) async{
+    var result = await _firebaseApi.createUser(email, password);
+    if (result == 'weak-password') {
+      print('La contraseña debe tener minimo 6 caracteres');
+    } else if (result == 'email-already-in-use') {
+      print('Ya existe una cuenta con ese correo electronico');
+    } else if (result == 'invalid-email') {
+      showMsg('Él correo electronico esta mal escrito');
+    } else {
+      showMsg('Usuario registrado exitosamente');
+      Navigator.pop(context);
+    }
+  }
+
+  void showMsg(String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(content: Text(msg),
+        duration: Duration(seconds: 10),
+        action: SnackBarAction(
+            label: "Aceptar",
+            onPressed: scaffold.hideCurrentSnackBar))
+    );
   }
 
   void _showSelectedDate() async{

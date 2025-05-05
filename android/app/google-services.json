@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39687472375",
+    "project_id": "moviesudea20251",
+    "storage_bucket": "moviesudea20251.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39687472375:android:a6dcd685e821ff03733ff2",
+        "android_client_info": {
+          "package_name": "com.camilo.medinah.movies_udea"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX0m9UL4flBXneQWm0JnhLTlVluD4uU9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

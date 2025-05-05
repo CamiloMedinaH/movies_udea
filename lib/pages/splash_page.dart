@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movies_udea/pages/home_navigation_bar_page.dart';
 import 'package:movies_udea/pages/sign_in_page.dart';
+import 'package:movies_udea/pages/sign_up_page.dart';
+import 'package:movies_udea/repository/firebase_api.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -9,6 +12,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
 
   @override
   void initState() {
@@ -30,10 +35,18 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _closeSplash() async{
     Future.delayed(const Duration(seconds: 2), () async {
-      Navigator.pushReplacement(
+      var result = _firebaseApi.validateSession();
+      if (await result) {
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SignInPage()),
-      );
+          MaterialPageRoute(builder: (context) => SignUpPage()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeNavigationBarPage())
+        );
+      }
     });
   }
 }

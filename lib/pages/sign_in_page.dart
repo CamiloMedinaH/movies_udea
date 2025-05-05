@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movies_udea/pages/home_navigation_bar_page.dart';
 import 'package:movies_udea/pages/recovey_password.dart';
 import 'package:movies_udea/pages/sign_up_page.dart';
+
+import '../repository/firebase_api.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -10,6 +13,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
 
   bool _isPasswordObscure = true;
   final _email = TextEditingController();
@@ -66,7 +71,7 @@ class _SignInPageState extends State<SignInPage> {
                     height: 16,
                   ),
                   ElevatedButton(
-                    onPressed: null,
+                    onPressed: _onSignInButtonClicked,
                     child: const Text("Iniciar sesion"),
                   ),
                   const SizedBox(
@@ -117,4 +122,37 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
+
+  void _onSignInButtonClicked() async {
+    if (_email.text.isEmpty || _password.text.isEmpty) {
+      showMsg("Debe digitar todos los campos");
+    } else {
+      var result = await _firebaseApi.createUser(_email.text, _password.text);
+       if (result == 'invalid-credential') {
+         showMsg('Correo electronico o contraseña incorrecta');
+       } else if (result == 'invalid-email') {
+        showMsg('Él correo electronico esta mal escrito');
+      } else if (result == 'network-request-failed') {
+        showMsg('Revise su conexion a internet');
+       } else {
+        showMsg('Bienvenido');
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeNavigationBarPage()),
+        );
+      }
+    }
+  }
+
+  void showMsg(String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+        SnackBar(content: Text(msg),
+            duration: Duration(seconds: 10),
+            action: SnackBarAction(
+                label: "Aceptar",
+                onPressed: scaffold.hideCurrentSnackBar))
+    );
+  }
+
 }
