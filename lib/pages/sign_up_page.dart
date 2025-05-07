@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:movies_udea/models/user.dart';
 
 import '../repository/firebase_api.dart';
 
@@ -204,6 +205,17 @@ class _SignUpPageState extends State<SignUpPage> {
     } else if (result == 'invalid-email') {
       showMsg('Él correo electronico esta mal escrito');
     } else {
+      var genre = (_genre == Genre.male) ? "Masculino" : "Femenino";
+      var _user = User(result, _name.text, _email.text, genre, _bornDate, "" );
+      _createUserInDB(_user);
+    }
+  }
+
+  void _createUserInDB(User user) async {
+    var result = await _firebaseApi.createUserInDB(user);
+    if (result == 'network-request-failed'){
+      showMsg('Revise su conexion a internet');
+    } else {
       showMsg('Usuario registrado exitosamente');
       Navigator.pop(context);
     }
@@ -244,8 +256,9 @@ class _SignUpPageState extends State<SignUpPage> {
 }
 
 extension on String{
-  bool isValidEmail(){
-    return RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+  bool isValidEmail() {
+    return RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
     ).hasMatch(this);
   }
 }

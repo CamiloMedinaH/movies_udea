@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/user.dart' as UserApp;
 
 class FirebaseApi {
 
@@ -48,4 +51,17 @@ class FirebaseApi {
     return await FirebaseAuth.instance.currentUser == null;
   }
 
+  Future<String> createUserInDB(UserApp.User user) async{
+    try {
+      var db = FirebaseFirestore.instance;
+      final document = await db
+          .collection('users')
+          .doc(user.uid)
+          .set(user.toJson());
+      return user.uid;
+    } on FirebaseException catch (e) {
+      print("FirebaseException ${e.message}");
+      return e.code;
+    }
+  }
 }

@@ -39,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
       if (await result) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SignUpPage()),
+          MaterialPageRoute(builder: (context) => SignInPage()),
         );
       } else {
         Navigator.pushReplacement(

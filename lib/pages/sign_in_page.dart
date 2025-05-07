@@ -127,12 +127,12 @@ class _SignInPageState extends State<SignInPage> {
     if (_email.text.isEmpty || _password.text.isEmpty) {
       showMsg("Debe digitar todos los campos");
     } else {
-      var result = await _firebaseApi.createUser(_email.text, _password.text);
+      var result = await _firebaseApi.signInUser(_email.text, _password.text);
        if (result == 'invalid-credential') {
          showMsg('Correo electronico o contraseña incorrecta');
        } else if (result == 'invalid-email') {
         showMsg('Él correo electronico esta mal escrito');
-      } else if (result == 'network-request-failed') {
+       } else if (result == 'network-request-failed') {
         showMsg('Revise su conexion a internet');
        } else {
         showMsg('Bienvenido');
